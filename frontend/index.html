@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APK Store</title>
+
+  <!-- Theme & PWA meta -->
+  <meta name="theme-color" content="#2196f3" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+
+  <!-- iOS support -->
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="APK Store" />
+
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>APK Store</h1>
+    <button id="settingsBtn">⚙️</button>
+    <div id="settingsMenu" style="display: none;">
+      <a id="profileLink" href="profile.html">Profile</a>
+      <button id="devConsoleBtn">Developer Console</button>
+      <button id="adminConsoleBtn">Admin Console</button>
+      <button id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <input type="text" id="searchInput" placeholder="Search apps..." />
+
+  <!-- App grid -->
+  <div id="noApps" style="display: none;">No apps found.</div>
+  <div id="appGrid" class="grid"></div>
+
+  <!-- Scripts -->
+  <script src="/script.js"></script>
+
+  <!-- Optional: Prompt install manually -->
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.createElement('button');
+      installBtn.textContent = 'Install App';
+      installBtn.style.position = 'fixed';
+      installBtn.style.bottom = '20px';
+      installBtn.style.right = '20px';
+      installBtn.style.padding = '10px 15px';
+      installBtn.style.background = '#2196f3';
+      installBtn.style.color = '#fff';
+      installBtn.style.border = 'none';
+      installBtn.style.borderRadius = '5px';
+      installBtn.style.cursor = 'pointer';
+      document.body.appendChild(installBtn);
+
+      installBtn.addEventListener('click', () => {
+        installBtn.remove();
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          deferredPrompt = null;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

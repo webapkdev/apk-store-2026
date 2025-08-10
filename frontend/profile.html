@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Profile - APK Store</title>
+<link rel="stylesheet" href="/style.css">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2196f3">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(()=> console.log('SW registered (profile)')).catch(()=>{});
+}
+</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Profile</div>
+  <div style="flex:1"></div>
+  <a class="btn" href="index.html">Back</a>
+</header>
+
+<main class="container">
+  <div id="profileBox" style="max-width:600px;margin:20px auto;padding:16px;background:rgba(255,255,255,0.03);border-radius:8px">
+    <h2 id="pName">Guest</h2>
+    <p id="pRole"></p>
+    <p id="pInfo"></p>
+    <div style="margin-top:12px">
+      <a id="toDev" class="btn" href="developer.html" style="display:none">Go to Developer Console</a>
+      <a id="toAdmin" class="btn" href="admin.html" style="display:none">Go to Admin Console</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  (function(){
+    const raw = localStorage.getItem("apk_user");
+    if (!raw) {
+      document.getElementById("pName").innerText = "Guest";
+      document.getElementById("pRole").innerText = "";
+      return;
+    }
+    const user = JSON.parse(raw);
+    document.getElementById("pName").innerText = user.username;
+    document.getElementById("pRole").innerText = "Role: " + user.role;
+    document.getElementById("pInfo").innerText = "Logged in locally — backend in this example returns role on login.";
+    if (user.role === "developer" || user.role === "admin") document.getElementById("toDev").style.display = "inline-block";
+    if (user.role === "admin") document.getElementById("toAdmin").style.display = "inline-block";
+  })();
+</script>
+</body>
+</html>

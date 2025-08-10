@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Settings</title>
+<link rel="stylesheet" href="/style.css">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2196f3">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(()=> console.log('SW registered (settings)')).catch(()=>{});
+}
+</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">Settings</div>
+  <div style="flex:1"></div>
+  <a class="btn" href="index.html">Back</a>
+</header>
+
+<main class="container">
+  <h3>Theme</h3>
+  <button id="toggleTheme" class="btn">Toggle Dark / Light</button>
+
+  <h3 style="margin-top:20px">Account</h3>
+  <p>You are logged in locally if you used the login page.</p>
+  <button id="doLogout" class="btn">Logout</button>
+</main>
+
+<script>
+document.getElementById("toggleTheme").addEventListener("click", () => {
+  document.body.classList.toggle("light");
+});
+document.getElementById("doLogout").addEventListener("click", () => {
+  localStorage.removeItem("apk_user");
+  alert("Logged out (local). You may also need to restart backend session if used.");
+  window.location.href = "index.html";
+});
+</script>
+</body>
+</html>
